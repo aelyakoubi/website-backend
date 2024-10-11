@@ -62,8 +62,8 @@ app.use("/contact", contactFormRouter);
 
 // Catch-all route to serve the index.html for React Router
 //app.get('*', (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'frontend', 'dist', 'index.html')); // Adjust this path if needed
-});
+ // res.sendFile(path.join(process.cwd(), 'frontend', 'dist', 'index.html')); // Adjust this path if needed
+//});
 
 // Error handling middleware (should be at the end)
 app.use(errorHandler);
