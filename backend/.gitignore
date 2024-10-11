@@ -1,0 +1,3 @@
+node_modules
+.vscode
+prisma/migrations/20231110180901_init/migration.sql

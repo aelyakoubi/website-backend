@@ -1,0 +1,21 @@
+{
+    "users": [
+      {
+        "id": "1",
+        "username": "ignacio_doe",
+        "email": "aelya2087@gmail.com",
+        "password": "p@ssw0rd1",
+        "name": "Ignacio Doe",
+        "image": "https://global-uploads.webflow.com/5eecfecbe625d195e35b89f2/624bfb093da7d92733c001c0_Ignacio%20Villafruela%20Rodr%C3%ADguez.jpg"
+      },
+      {
+        "id": "2",
+        "username": "WalterWhite",
+        "email": "Walter@example.com",
+        "password": "Walter2",
+        "name": "Walther White",
+        "image": "https://global-uploads.webflow.com/5eecfecbe625d195e35b89f2/624bfb401d7131c760ca1c63_Elieska%20Lensink.jpg"
+      }
+    ]
+  }
+  
