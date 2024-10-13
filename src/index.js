@@ -58,12 +58,12 @@ app.use("/login", loginRouter);
 app.use("/contact", contactFormRouter);
 
 // Serve static files from the Vite build directory
-app.use(express.static(path.join(process.cwd(), 'frontend', 'dist'))); // Adjust this path if needed
+//app.use(express.static(path.join(process.cwd(), 'frontend', 'dist'))); // Adjust this path if needed
 
 // Catch-all route to serve the index.html for React Router
-app.get('*', (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'frontend', 'dist', 'index.html')); // Adjust this path if needed
-});
+//app.get('*', (req, res) => {
+ // res.sendFile(path.join(process.cwd(), 'frontend', 'dist', 'index.html')); // Adjust this path if needed
+//});
 
 // Error handling middleware (should be at the end)
 app.use(errorHandler);
