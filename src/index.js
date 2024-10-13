@@ -74,13 +74,7 @@ app.use("/categories", categoriesRouter);
 app.use("/login", loginLimiter, loginRouter); // Apply login limiter here
 app.use("/contact", contactFormRouter);
 
-// Serve static files from the Vite build directory
-app.use(express.static(path.join(process.cwd(), 'frontend', 'dist')));
 
-// Catch-all route to serve the index.html for React Router
-app.get('*', (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'frontend', 'dist', 'index.html'));
-});
 
 // Error handling middleware (should be at the end)
 app.use(errorHandler);
