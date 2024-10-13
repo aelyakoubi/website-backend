@@ -1,6 +1,6 @@
 Developement and Production ready
 
-npm run dev
+npm run dev, 
 npm run start
 
 It automaticly connects to development
