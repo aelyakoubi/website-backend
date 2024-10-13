@@ -1,5 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 
+const prisma = new PrismaClient();
+
+const isValidDate = (dateString) => {
+  const date = new Date(dateString);
+  return !isNaN(date.getTime());
+};
+
 const createEvent = async (
   title,
   description,
@@ -10,10 +17,12 @@ const createEvent = async (
   createdBy,  // This will be the 'id' from the token
   categoryIds
 ) => {
-  const prisma = new PrismaClient();
-
   if (!createdBy) {
     throw new Error("User ID (createdBy) is required to create an event.");
+  }
+
+  if (!isValidDate(startTime) || !isValidDate(endTime)) {
+    throw new Error("Invalid date format for startTime or endTime.");
   }
 
   // Log the received category IDs for debugging
@@ -25,7 +34,7 @@ const createEvent = async (
         title,
         description,
         location,
-        image,
+        image: image || null, // Include image only if provided
         startTime: new Date(startTime),
         endTime: new Date(endTime),
         createdBy: {
@@ -39,12 +48,15 @@ const createEvent = async (
       },
     });
 
-    return event;
+    return {
+      id: event.id,
+      title: event.title,
+      createdBy: event.createdBy,
+      // Add other necessary fields here
+    };
   } catch (error) {
     console.error("Error creating event:", error);
     throw error;
-  } finally {
-    await prisma.$disconnect();
   }
 };
 

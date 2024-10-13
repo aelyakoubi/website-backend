@@ -38,6 +38,7 @@ router.post('/signup', upload.single('image'), userValidationRules(), async (req
     return res.status(400).json({ errors: errors.array() });
   }
 
+  // Reinstated line to extract data from req.body and handle image upload
   const { name, email, username, password } = req.body;
   const image = req.file ? `/uploads/${req.file.filename}` : null;
 

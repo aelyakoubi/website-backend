@@ -3,7 +3,8 @@ import nodemailer from 'nodemailer';
 import fs from 'fs';
 import pdf from 'html-pdf';
 import path from 'path';
-import { fileURLToPath } from 'url'; // Ensure import to handle __dirname
+import { fileURLToPath } from 'url';
+import { body, validationResult } from 'express-validator'; // Import express-validator
 
 const router = express.Router();
 
@@ -12,11 +13,11 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Correct path to messages directory directly within the backend directory
-const messagesDir = path.join(__dirname, '../messages'); // Adjust this according to your structure
+const messagesDir = path.join(__dirname, '../messages');
 
 // Create messages directory if it doesn't exist
 if (!fs.existsSync(messagesDir)) {
-  fs.mkdirSync(messagesDir, { recursive: true }); // Create the directory recursively
+  fs.mkdirSync(messagesDir, { recursive: true });
 }
 
 // Utility function to get current date
@@ -28,12 +29,21 @@ const getCurrentDate = () => {
   return `${day}-${month}-${year}`; // Format: DD-MM-YYYY
 };
 
-router.post('/', async (req, res) => {
-  const { name, email, message } = req.body;
+// Define the validation and sanitization rules
+const contactValidationRules = [
+  body('name').trim().escape().notEmpty().withMessage('Name is required.'),
+  body('email').isEmail().normalizeEmail().withMessage('Valid email is required.'),
+  body('message').trim().escape().notEmpty().withMessage('Message is required.'),
+];
 
-  if (!name || !email || !message) {
-    return res.status(400).json({ error: "All fields are required." });
+router.post('/', contactValidationRules, async (req, res) => {
+  // Handle validation errors
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ errors: errors.array() });
   }
+
+  const { name, email, message } = req.body;
 
   try {
     const currentDate = getCurrentDate(); // Get current date
