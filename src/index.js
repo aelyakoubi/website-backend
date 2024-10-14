@@ -21,6 +21,9 @@ const prisma = new PrismaClient({
 
 const app = express();
 
+// Set 'trust proxy' to enable correct interpretation of X-Forwarded-For header
+app.set('trust proxy', 1); // Trust first proxy (Render's reverse proxy)
+
 // Use Helmet middleware for security headers
 app.use(helmet());
 
@@ -73,8 +76,6 @@ app.use("/events", eventsRouter);
 app.use("/categories", categoriesRouter);
 app.use("/login", loginLimiter, loginRouter); // Apply login limiter here
 app.use("/contact", contactFormRouter);
-
-
 
 // Error handling middleware (should be at the end)
 app.use(errorHandler);
