@@ -48,7 +48,7 @@ router.post('/', contactValidationRules, async (req, res) => {
   try {
     const currentDate = getCurrentDate(); // Get current date
 
-    // Log the email credentials for debugging
+    // Log the email credentials for debugging  /// going to be removed
     console.log('Email User:', process.env.EMAIL_USER);
     console.log('Email Password:', process.env.EMAIL_PASS);
 
