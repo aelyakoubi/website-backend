@@ -1,21 +1,28 @@
 {
-    "users": [
-      {
-        "id": "1",
-        "username": "ignacio_doe",
-        "email": "aelya2087@gmail.com",
-        "password": "p@ssw0rd1",
-        "name": "Ignacio Doe",
-        "image": "https://global-uploads.webflow.com/5eecfecbe625d195e35b89f2/624bfb093da7d92733c001c0_Ignacio%20Villafruela%20Rodr%C3%ADguez.jpg"
+  "users": [
+    {
+      "id": "be11ed29-d958-47e4-a6f6-7d0d4f0ff173",
+      "username": "ignacio_doe2",
+      "email": "testpingpognsdfdsf@gmail.com",
+      "password": "Ignacio1234",
+      "name": "Ignacio Villafruela Rodríguez",
+      "image": "https://global-uploads.webflow.com/5eecfecbe625d195e35b89f2/624bfb093da7d92733c001c0_Ignacio%20Villafruela%20Rodr%C3%ADguez.jpg"
+    },
+    {
+      "id": "7d9a5c54-42c1-4636-89a3-cd1c69e5bb84",
+      "username": "Wimpie Blok",
+      "email": "Wimpie Blok@example.com",
+      "password": "Wimpie1234",
+      "name": "Wimpie Blok",
+      "image": "https://global-uploads.webflow.com/5eecfecbe625d195e35b89f2/624bfb401d7131c760ca1c63_Elieska%20Lensink.jpg"
       },
       {
-        "id": "2",
-        "username": "WalterWhite",
-        "email": "Walter@example.com",
-        "password": "Walter2",
-        "name": "Walther White",
+        "id": "7d9a5c54-42c1-4636-89a3-cd1c69e5bb88",
+        "username": "RoyBakker",
+        "email": "exameple@example.com",
+        "password": "A_2622",
+        "name": "Roy Bakker",
         "image": "https://global-uploads.webflow.com/5eecfecbe625d195e35b89f2/624bfb401d7131c760ca1c63_Elieska%20Lensink.jpg"
       }
-    ]
-  }
-  
+  ]
+}

@@ -1,10 +1,11 @@
+// backend/src/routes/contactForm.js will handle the POST request to submit the contact form.
+
 import express from 'express';
-import nodemailer from 'nodemailer';
-import fs from 'fs';
-import pdf from 'html-pdf';
-import path from 'path';
+import { body, validationResult } from 'express-validator';
 import { fileURLToPath } from 'url';
-import { body, validationResult } from 'express-validator'; // Import express-validator
+import path from 'path';
+import fs from 'fs';
+import { sendContactForm } from '../services/email/sendContactForm.js'; // Correct import
 
 const router = express.Router();
 
@@ -20,15 +21,6 @@ if (!fs.existsSync(messagesDir)) {
   fs.mkdirSync(messagesDir, { recursive: true });
 }
 
-// Utility function to get current date
-const getCurrentDate = () => {
-  const now = new Date();
-  const day = now.getDate().toString().padStart(2, '0');
-  const month = (now.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based
-  const year = now.getFullYear();
-  return `${day}-${month}-${year}`; // Format: DD-MM-YYYY
-};
-
 // Define the validation and sanitization rules
 const contactValidationRules = [
   body('name').trim().escape().notEmpty().withMessage('Name is required.'),
@@ -36,6 +28,7 @@ const contactValidationRules = [
   body('message').trim().escape().notEmpty().withMessage('Message is required.'),
 ];
 
+// POST route to handle contact form submissions
 router.post('/', contactValidationRules, async (req, res) => {
   // Handle validation errors
   const errors = validationResult(req);
@@ -46,65 +39,9 @@ router.post('/', contactValidationRules, async (req, res) => {
   const { name, email, message } = req.body;
 
   try {
-    const currentDate = getCurrentDate(); // Get current date
-
-    // Log the email credentials for debugging  /// going to be removed
-    console.log('Email User:', process.env.EMAIL_USER);
-    console.log('Email Password:', process.env.EMAIL_PASS);
-
-    // Create a transporter using nodemailer
-    const transporter = nodemailer.createTransport({
-      host: 'smtp.strato.com',
-      port: 465,
-      secure: true,
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-      tls: {
-        rejectUnauthorized: false,
-      },
-    });
-
-    // Prepare email for admin
-    const mailOptionsToAdmin = {
-      from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER,
-      subject: `New Contact Form Submission from ${name}`,
-      text: `You received a new message from ${name} (${email}) on ${currentDate}:\n\n${message}`,
-    };
-
-    // Prepare email for the user
-    const mailOptionsToUser = {
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: 'Thank you for contacting us!',
-      text: `Dear ${name},\n\nThank you for your message on ${currentDate}. We will get back to you as soon as possible.\n\nBest regards,\nYour Company`,
-    };
-
-    // Send the email to admin and user
-    await transporter.sendMail(mailOptionsToAdmin);
-    await transporter.sendMail(mailOptionsToUser);
-
-    // Save the message as plain text
-    const plainTextContent = `Message from: ${name} (${email})\nDate: ${currentDate}\n\n${message}`;
-    fs.writeFileSync(path.join(messagesDir, `${name}-${currentDate}-message.txt`), plainTextContent);
-
-    // Save the message as PDF
-    const htmlContent = `
-      <h3>Message from: ${name} (${email})</h3>
-      <p>Date: ${currentDate}</p>
-      <p>${message}</p>
-    `;
-    pdf.create(htmlContent).toFile(path.join(messagesDir, `${name}-${currentDate}-message.pdf`), (err, res) => {
-      if (err) {
-        console.error('Error generating PDF:', err);
-      }
-    });
-
-    console.log('Messages Directory:', messagesDir);
-
-    return res.status(200).json({ message: "Message sent successfully!" });
+    // Call the sendContactForm function
+    const response = await sendContactForm(name, email, message, messagesDir);
+    return res.status(200).json(response);
   } catch (error) {
     console.error('Error sending email or saving files:', error);
     return res.status(500).json({ error: "Failed to send message." });
@@ -112,3 +49,4 @@ router.post('/', contactValidationRules, async (req, res) => {
 });
 
 export default router;
+

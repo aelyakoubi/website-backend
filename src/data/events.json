@@ -1,8 +1,8 @@
 {
   "events": [
     {
-      "id": "1",
-      "createdBy": "1",
+      "id": "be11ed29-d958-47e4-a6f6-7d0d4f0ff174",
+      "createdBy": "be11ed29-d958-47e4-a6f6-7d0d4f0ff173",
       "title": "Trampoline party",
       "description": "Bounce around with your friends",
       "image": "https://i.pinimg.com/736x/3d/2f/af/3d2faf4e3188d34a9fcdc00df59e77b0.jpg",
@@ -12,8 +12,8 @@
       "endTime": "2025-03-10T20:00:00.000Z"
     },
     {
-      "id": "2",
-      "createdBy": "1",
+      "id": "be11ed29-d958-47e4-a6f6-7d0d4f0ff175",
+      "createdBy": "be11ed29-d958-47e4-a6f6-7d0d4f0ff173",
       "title": "Laser Tag mania",
       "description": "Let's play laser tag!",
       "image": "https://www.ctvnews.ca/polopoly_fs/1.5118552.1600965663!/httpImage/image.jpg_gen/derivatives/landscape_1020/image.jpg",
@@ -23,8 +23,8 @@
       "endTime": "2025-04-06T20:46:00.000Z"
     },
     {
-      "id": "3",
-      "createdBy": "2",
+      "id": "7d9a5c54-42c1-4636-89a3-cd1c69e5bb85",
+      "createdBy": "7d9a5c54-42c1-4636-89a3-cd1c69e5bb84",
       "title": "Badminton game",
       "description": "Hit that shuttle!",
       "image": "https://s3.eu-west-2.amazonaws.com/ws-activestirling/production/Badminton/_1200x630_crop_center-center_none/Badminton-3.jpg",
@@ -34,8 +34,8 @@
       "endTime": "2025-03-15T14:30:00.000Z"
     },
     {
-      "id": "4",
-      "createdBy": "2",
+      "id": "7d9a5c54-42c1-4636-89a3-cd1c69e5bb86",
+      "createdBy": "7d9a5c54-42c1-4636-89a3-cd1c69e5bb84",
       "title": "Yoga",
       "description": "It's a bit of a stretch.",
       "image": "https://thewholeu.uw.edu/wp-content/uploads/yoga-gettyimages-1142820079-promo-copy.jpg",
@@ -45,8 +45,8 @@
       "endTime": "2025-03-09T07:30:00.000Z"
     },
     {
-      "id": "5",
-      "createdBy": "1",
+      "id": "be11ed29-d958-47e4-a6f6-7d0d4f0ff177",
+      "createdBy": "be11ed29-d958-47e4-a6f6-7d0d4f0ff173",
       "title": "Game event",
       "description": "Let's game guys",
       "image": "https://images.pexels.com/photos/1174746/pexels-photo-1174746.jpeg",
@@ -56,8 +56,8 @@
       "endTime": "2025-03-11T20:00:00.000Z"
     },
     {
-      "id": "6",
-      "createdBy": "1",
+      "id": "be11ed29-d958-47e4-a6f6-7d0d4f0ff178",
+      "createdBy": "be11ed29-d958-47e4-a6f6-7d0d4f0ff173",
       "title": "Golf Event AMS",
       "description": "Let's hit the ball",
       "image": "https://www.golf.nl/-/media/images/zelf-golfen/meerenbetergolf.jpg",
@@ -67,8 +67,8 @@
       "endTime": "2025-04-10T20:46:00.000Z"
     },
     {
-      "id": "7",
-      "createdBy": "2",
+      "id": "7d9a5c54-42c1-4636-89a3-cd1c69e5bb87",
+      "createdBy": "7d9a5c54-42c1-4636-89a3-cd1c69e5bb84",
       "title": "Basketbal toernooi",
       "description": "Let's Play basketbal",
       "image": "https://afbeelding.dvhn.nl/dvhn/incoming/98tphq-202206052128-1.jpg/alternates/LANDSCAPE_1280/202206052128-1.jpg",
@@ -78,8 +78,8 @@
       "endTime": "2025-03-17T14:30:00.000Z"
     },
     {
-      "id": "8",
-      "createdBy": "2",
+      "id": "7d9a5c54-42c1-4636-89a3-cd1c69e5bb88",
+      "createdBy": "7d9a5c54-42c1-4636-89a3-cd1c69e5bb84",
       "title": "Playing Chess",
       "description": "Who is smarter",
       "image": "https://images.pexels.com/photos/260024/pexels-photo-260024.jpeg",
@@ -89,8 +89,8 @@
       "endTime": "2025-03-09T09:00:00.000Z"
     },
     {
-      "id": "9",
-      "createdBy": "1",
+      "id": "be11ed29-d958-47e4-a6f6-7d0d4f0ff179",
+      "createdBy": "be11ed29-d958-47e4-a6f6-7d0d4f0ff173",
       "title": "Laser Tag mania",
       "description": "Let's play laser tag!",
       "image": "https://www.ctvnews.ca/polopoly_fs/1.5118552.1600965663!/httpImage/image.jpg_gen/derivatives/landscape_1020/image.jpg",
@@ -100,8 +100,8 @@
       "endTime": "2025-04-08T20:46:00.000Z"
     },
     {
-      "id": "10",
-      "createdBy": "2",
+      "id": "7d9a5c54-42c1-4636-89a3-cd1c69e5bb89",
+      "createdBy": "7d9a5c54-42c1-4636-89a3-cd1c69e5bb84",
       "title": "Card Race game",
       "description": "Amazing course!",
       "image": "https://rhpk.co.uk/wp-content/uploads/2016/06/Matt-England_7790-edit-660x330.jpg",
@@ -111,48 +111,15 @@
       "endTime": "2025-03-16T14:30:00.000Z"
     },
     {
-      "id": "11",
-      "createdBy": "2",
+      "id": "7d9a5c54-42c1-4636-89a3-cd1c69e5bb90",
+      "createdBy": "7d9a5c54-42c1-4636-89a3-cd1c69e5bb84",
       "title": "Football tournament",
       "description": "Let's play football",
       "image": "https://www.voetbalreizenxl.nl/wp-content/uploads/2019/05/FC-Barcelona-CampNou.jpg",
-      "categoryIds": ["3"],
-      "location": "Shavasana Yoga School, Utrecht",
-      "startTime": "2025-03-10T06:00:00.000Z",
-      "endTime": "2025-03-10T08:00:00.000Z"
-    },
-    {
-      "id": "12",
-      "createdBy": "1",
-      "title": "Baseball Event",
-      "description": "Let's hit the ball",
-      "image": "https://i.abcnewsfe.com/a/54508fa4-688e-4072-bbf0-67930d1d0336/baseball-1-ap-gmh-230901_1693579673197_hpMain.jpg?",
-      "categoryIds": ["2"],
-      "location": "My back yard, Turnhout",
-      "startTime": "2025-03-15T18:00:00.000Z",
-      "endTime": "2025-03-15T20:00:00.000Z"
-    },
-    {
-      "id": "13",
-      "createdBy": "1",
-      "title": "Ping Pong Event",
-      "description": "Be ready to hit the ball",
-      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR6gJaFPIA05iasHEjyU7mD7r0M5YpfcOuUg&s",
       "categoryIds": ["1"],
-      "location": "Noordhavenweg 100, Amsterdam",
-      "startTime": "2025-04-12T18:46:00.000Z",
-      "endTime": "2025-04-13T20:46:00.000Z"
-    },
-    {
-      "id": "14",
-      "createdBy": "2",
-      "title": "Neighborhood event residents",
-      "description": "Be social",
-      "image": "https://asset.gallup.com/p/TGBCMS/00efd2da-7ab8-44c6-921f-5a7c44b7cdfd.jpg",
-      "categoryIds": ["1"],
-      "location": "The Park, Lelystad",
-      "startTime": "2025-03-18T12:00:00.000Z",
-      "endTime": "2025-03-18T14:00:00.000Z"
+      "location": "Stadium Utrecht",
+      "startTime": "2025-03-21T12:00:00.000Z",
+      "endTime": "2025-03-21T14:30:00.000Z"
     }
   ]
 }

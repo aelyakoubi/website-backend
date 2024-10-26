@@ -30,10 +30,7 @@ router.post("/", auth, async (req, res, next) => {
       categoryIds,
     } = req.body;
 
-    // Corrected line: Extract the 'id' from req.user (not userId, since the token uses 'id')
-    const createdBy = req.user.id;  // Changed from req.user.userId     to req.user.id
-
-    console.log('Decoded token userId:', createdBy);  // Added Debugging line
+    const createdBy = req.user.id;
 
     const newEvent = await createEvent(
       title,
@@ -42,7 +39,7 @@ router.post("/", auth, async (req, res, next) => {
       image,
       startTime,
       endTime,
-      createdBy, // Pass the userId (now 'createdBy') here
+      createdBy,
       categoryIds
     );
 
@@ -70,9 +67,10 @@ router.get("/:id", async (req, res, next) => {
 router.delete("/:id", auth, async (req, res, next) => {
   try {
     const { id } = req.params;
-    const event = await deleteEventById(id);
+    const userId = req.user.id; // Get the userId from the authenticated user
+    const eventId = await deleteEventById(id, userId); // Pass the userId to the function
 
-    if (event) {
+    if (eventId) {
       res.status(200).send({
         message: `Event with id ${id} successfully deleted`,
       });
@@ -89,29 +87,11 @@ router.delete("/:id", auth, async (req, res, next) => {
 router.put("/:id", auth, async (req, res, next) => {
   try {
     const { id } = req.params;
-    const {
-      name,
-      description,
-      location,
-      image,
-      startTime,
-      endTime,
-      createdBy,
-      categoryIds,
-    } = req.body;
-    const event = await updateEventById(id, {
-      name,
-      description,
-      location,
-      image,
-      startTime,
-      endTime,
-      createdBy,
-      categoryIds,
-    });
+    const userId = req.user.id; // Get the userId from the authenticated user
+    const updatedEvent = await updateEventById(id, req.body, userId); // Pass the userId to the function
 
-    if (event) {
-      res.status(200).send({
+    if (updatedEvent) {
+      res.status(200).json({
         message: `Event with id ${id} successfully updated`,
       });
     } else {
@@ -123,5 +103,6 @@ router.put("/:id", auth, async (req, res, next) => {
     next(error);
   }
 });
+
 
 export default router;

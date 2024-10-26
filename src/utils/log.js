@@ -7,6 +7,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename); // Create __dirname
 
+// Create a winston logger instance
 const logger = winston.createLogger({
   level: "info", // You can adjust the logging level here
   format: winston.format.json(),
@@ -56,4 +57,5 @@ const customLog = (message, data) => {
   logger.info(message, data);
 };
 
+// Named export for logger and customLog
 export { logger, customLog };

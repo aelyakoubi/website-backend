@@ -17,35 +17,28 @@ const login = async (identifier, password) => {
       }
     });
 
+    console.log({ user }); // Log the user object
+
     if (!user) {
-      // Return more specific error to indicate invalid credentials
       throw new Error('Invalid credentials');
     }
 
-    // Compare the provided password with the hashed password in the database
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
     if (!isPasswordValid) {
-      throw new Error('Invalid credentials'); // Consistent error message for security reasons
+      throw new Error('Invalid credentials');
     }
 
-    // Generate JWT token using AUTH_SECRET_KEY from the environment
     const token = jwt.sign({ id: user.id, username: user.username }, process.env.AUTH_SECRET_KEY, {
-      expiresIn: '1h', // Token expiration time
+      expiresIn: '1h',
     });
-    
-    // Log the secret key for debugging
-   //// console log auth secret key, removed for security reasons
 
-    return token; // Return the token for further use
+    return token;
   } catch (error) {
-    // Log the error for debugging purposes
     console.error("Login error:", error.message);
-
-    // Rethrow the error to the route handler to send appropriate response
     throw error;
   }
 };
 
-export default login;
 
+export default login;

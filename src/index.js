@@ -7,12 +7,13 @@ import usersRouter from "./routes/users.js";
 import eventsRouter from "./routes/events.js";
 import categoriesRouter from "./routes/categories.js";
 import loginRouter from "./routes/login.js";
+import accountRouter from "./routes/account.js";
 import log from "./middleware/logMiddleware.js";
 import errorHandler from "./middleware/errorHandler.js";
 import helmet from 'helmet';
 import path from 'path';
 import contactFormRouter from './routes/contactForm.js'; 
-import rateLimit from 'express-rate-limit'; // Add the rate-limit import
+import rateLimit from 'express-rate-limit';
 
 // Initialize Prisma Client
 const prisma = new PrismaClient({
@@ -76,7 +77,7 @@ app.use("/events", eventsRouter);
 app.use("/categories", categoriesRouter);
 app.use("/login", loginLimiter, loginRouter); // Apply login limiter here
 app.use("/contact", contactFormRouter);
-
+app.use("/account", accountRouter);
 // Error handling middleware (should be at the end)
 app.use(errorHandler);
 
