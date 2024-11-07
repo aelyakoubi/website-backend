@@ -8,9 +8,9 @@ Het kan tot 50 tot 160 seconden duren voordat de website online is i.v.m. een gr
 
 If you want to test, log in: 
 
-Username:       ignacio_doe2
+Username: Wimpie Blok
 
-Password:       A_2622
+Password: Wimpie1234
 
 Note: Do NOT press on delete the account otherwise you need another  username and password. 
 
