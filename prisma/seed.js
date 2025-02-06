@@ -3,23 +3,8 @@ import bcrypt from "bcrypt"; // Import bcrypt for hashing passwords
 import eventsData from "../src/data/events.json" assert { type: "json" };
 import userData from "../src/data/users.json" assert { type: "json" };
 import categoryData from "../src/data/categories.json" assert { type: "json" };
-import { body, validationResult } from 'express-validator'; // Import express-validator for validation
 
 const prisma = new PrismaClient({ log: ["query", "info", "warn", "error"] });
-
-// Validation rules for user data
-const validateUser = (user) => {
-  const errors = [];
-  if (!user.name) errors.push("Name is required");
-  if (!user.email || !/\S+@\S+\.\S+/.test(user.email)) errors.push("Invalid email format");
-  if (!user.username || user.username.length < 3 || user.username.length > 20) {
-    errors.push("Username must be between 3 to 20 characters long");
-  }
-  if (user.password && user.password.length < 6) {
-    errors.push("Password must be at least 6 characters long");
-  }
-  return errors;
-};
 
 async function main() {
   const { events } = eventsData;
@@ -38,37 +23,20 @@ async function main() {
   // Upsert users with password hashing
   for (const user of users) {
     try {
-      // Ensure user JSON has an ID
-      if (!user.id) {
-        console.error("User data missing ID:", user);
-        continue; // Skip this user if ID is missing
-      }
-
-      // Validate user data
-      const errors = validateUser(user);
-      if (errors.length) {
-        console.error(`Validation errors for user ${user.username}:`, errors);
-        continue; // Skip this user if validation fails
-      }
-
-      // Hash password if it exists
-      const hashedPassword = user.password ? await bcrypt.hash(user.password, 10) : null;
+      const hashedPassword = user.password ? await bcrypt.hash(user.password, 10) : null; // Hash password if it exists
 
       await prisma.user.upsert({
-        where: { id: user.id },
+        where: { id: user.id }, // Ensure user JSON has id
         update: {
-          name: user.name || undefined,       // Update name if provided
-          username: user.username || undefined, // Update username if provided
-          email: user.email || undefined,      // Update email if provided
-          password: hashedPassword || undefined, // Update password only if hashed
-          image: user.image || null,           // Set image if provided, otherwise null
+          name: user.name, // Update name if exists
+          username: user.username, // Update username if exists
+          email: user.email, // Update email if exists
+          password: hashedPassword || undefined, // Update password only if provided (hashed)
+          image: user.image || null, // Set image if provided, otherwise null
         },
         create: {
-          name: user.name,                      // Ensure name is included
-          username: user.username,              // Ensure username is included
-          email: user.email,                    // Ensure email is included
-          password: hashedPassword,              // Ensure password is hashed for new user
-          image: user.image || null,            // Ensure image is included
+          ...user,
+          password: hashedPassword, // Ensure password is hashed for new user
         },
       });
     } catch (error) {

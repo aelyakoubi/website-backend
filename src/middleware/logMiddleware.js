@@ -1,4 +1,4 @@
-import {logger} from '../utils/log.js'
+import logger from '../utils/log.js'
 
 const log = (req, res, next) => {
   const start = new Date()

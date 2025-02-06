@@ -1,15 +1,6 @@
 import nodemailer from 'nodemailer';
-import validator from 'validator'; // Import validator for sanitization
 
 const sendWelcomeEmail = async (email, username) => {
-  // Validate email format
-  if (!email || !validator.isEmail(email)) {
-    throw new Error('Invalid email format');
-  }
-
-  // Sanitize username
-  const sanitizedUsername = validator.escape(username);
-
   const transporter = nodemailer.createTransport({
     host: 'smtp.strato.com',
     port: 465,
@@ -27,14 +18,14 @@ const sendWelcomeEmail = async (email, username) => {
     from: process.env.EMAIL_USER,
     to: email,
     subject: 'Welcome to Our Service',
-    text: `Hello ${sanitizedUsername}! Thank you for registering with us. We are glad to have you!`,
+    text: `Hello ${username}! Thank you for registering with us. We are glad to have you!`,
   };
 
   const mailOptionsToAdmin = {
     from: process.env.EMAIL_USER,
     to: process.env.EMAIL_USER, // Admin email (your email)
     subject: 'New User Registered',
-    text: `A new user has registered:\n\nUsername: ${sanitizedUsername}\nEmail: ${email}`,
+    text: `A new user has registered:\n\nUsername: ${username}\nEmail: ${email}`,
   };
 
   try {
