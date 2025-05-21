@@ -4,9 +4,8 @@
 
 [Visit the App](https://website-frontend-8wnm.onrender.com)
 
-> ⚠️ **Note:** It may take **50 to 160 seconds** for the website to load due to the limitations of a free Render account.
+> ⚠️ **Note:** It may take **50 to 160 seconds** for the **events to be loaded** due to the cold start delay on a free Render account.
 
----
 
 ## 🔐 Test Credentials
 
