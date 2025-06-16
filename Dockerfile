@@ -1,20 +1,26 @@
-# Use a Node.js base image
-FROM node:18
+# Use Node.js image
+FROM node:20
 
-# Set the working directory inside the container
-WORKDIR /usr/src/app
+# Set working directory
+WORKDIR /app
 
-# Copy package.json and package-lock.json
+# Alleen dependency bestanden kopiëren (Docker caching!)
 COPY package*.json ./
 
-# Install dependencies
+# Dependencies installeren
 RUN npm install
 
-# Copy the rest of the application code
+# Prisma CLI nodig vóór je `generate` draait
+RUN npm install -g prisma
+
+# De rest van de app kopiëren
 COPY . .
 
-# Expose port 3000 for the backend
+# Prisma client genereren
+RUN npx prisma generate
+
+# Poort openen
 EXPOSE 3000
 
-# Start the backend application
+# Start server met nodemon of direct met node (dev/prod)
 CMD ["npm", "run", "dev"]
