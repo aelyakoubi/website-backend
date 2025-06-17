@@ -1,0 +1,9 @@
+PORT=80
+NODE_ENV=production
+AUTH_SECRET_KEY=prodsecretkeydummy
+SENTRY_DSN="https://dummyproddsn@sentry.io/654321"
+DATABASE_URL="mysql://produser:prodpass@prodhost:3306/proddb"
+EMAIL_USER="produser@example.com"
+EMAIL_PASS="prodpassdummy"
+CONTACT_EMAIL_USER="contact@example.com"
+CORS_ORIGIN="https://jouwdomein.nl"

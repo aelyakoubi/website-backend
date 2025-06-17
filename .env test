@@ -1,0 +1,9 @@
+PORT=3001
+NODE_ENV=test
+AUTH_SECRET_KEY=testsecretkeydummy
+SENTRY_DSN="https://dummytstdsn@sentry.io/987654"
+DATABASE_URL="mysql://testuser:testpass@testhost:3306/testdb"
+EMAIL_USER="testuser@example.com"
+EMAIL_PASS="testpassdummy"
+CONTACT_EMAIL_USER="contact@example.com"
+CORS_ORIGIN="http://localhost:5173"
