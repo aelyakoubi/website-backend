@@ -18,7 +18,7 @@
   "author": "A el Yakoubi",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^5.20.0",
+    "@prisma/client": "^5.22.0",
     "@sentry/node": "^7.79.0",
     "@sentry/profiling-node": "^1.2.6",
     "bcrypt": "^5.1.1",

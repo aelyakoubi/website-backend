@@ -1,0 +1,33 @@
+** For setup/and database view **
+
+npm install  
+npm run dev
+npm i prisma -D
+npx prisma init                            1.
+npx prisma generate                        2.
+npx prisma format                          3. 
+npm install @prisma/client                 4.              
+npx prisma db push                         5.
+
+
+npm run seed                               6.
+npx prisma studio   
+npx prisma migrate dev --name init         7.
+npx prisma migrate dev                     8.                       
+
+
+npx prisma command    (to know all command options)
+
+npx prisma studio                     (open an third terminal to view the database. npx prisma studio and enter)
+npm run dev
+npx prisma migrate dev --name init     // add a migration of your data to keep original data save
+ 
+
+To solve this issue, you can restart the server, and it will use the original dataset again. 
+The test requires the original data from the seed file to work properly. 
+If you want to reset your data, you can use the following command. 
+(keep in mind that this also pushes your latest Prisma etc)
+
+npx prisma db push --force-reset      // remove existing data and apply the latest schema                 
+npm run seed                          // seed the database with new data from backend/src/data/..
+npm run dev                           // start / restart the dev eenvironment
