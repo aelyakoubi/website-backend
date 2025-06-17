@@ -33,7 +33,7 @@ app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 // Configure CORS with custom allowed headers
 const corsOptions = {
   origin:
-    process.env.NODE_ENV === 'development' // || process.env.NODE_ENV === 'test'
+    process.env.NODE_ENV === 'production'
       ? process.env.CORS_ORIGIN
       : 'http://localhost:5173',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
@@ -62,20 +62,20 @@ app.use('/contact', contactFormRouter);
 // Serve static files from the Vite build directory
 
 // for DEVELOPMENT Comment out this block
-// app.use(express.static(path.join(process.cwd(), 'frontend', 'dist'))); // Adjust this path if needed
+app.use(express.static(path.join(process.cwd(), 'frontend', 'dist'))); // Adjust this path if needed
 
-// // Catch-all route to serve the index.html for React Router
-//  app.get('*', (req, res) => {
-//  res.sendFile(path.join(process.cwd(), 'frontend', 'dist', 'index.html'));
-// });
-// for DEVELOPMENT Comment out till this block
+// Catch-all route to serve the index.html for React Router
+app.get('*', (req, res) => {
+  res.sendFile(path.join(process.cwd(), 'frontend', 'dist', 'index.html'));
+});
+// for DEVELOPMENT Comment out this block till here
 
 // Test route voor backend(Always keep this route for development/testing/debugging, but before the error handler)
-app.get('/', (req, res) => {
-  res.send(
-    '✅ Backend werkt! Gebruik /users of andere API-routes om verder te testen.'
-  );
-});
+// app.get('/', (req, res) => {
+//   res.send(
+//     '✅ Backend werkt! Gebruik /users of andere API-routes om verder te testen.'
+//   );
+// });
 
 // Error handling middleware (should be at the end)
 app.use(errorHandler);
