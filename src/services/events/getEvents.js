@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from '@prisma/client';
 
 const getEvents = async (title, location) => {
   const prisma = new PrismaClient();
@@ -11,6 +11,7 @@ const getEvents = async (title, location) => {
         contains: location,
       },
     },
+    include: { categories: true }, // Uncomment if you want to include related categories changed for Hero.jsx
   });
 
   return events;

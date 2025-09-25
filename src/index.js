@@ -3,6 +3,7 @@ import * as Sentry from '@sentry/node';
 import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
+import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import path from 'path';
 import errorHandler from './middleware/errorHandler.js';
@@ -20,8 +21,30 @@ const prisma = new PrismaClient({
 
 const app = express();
 
-// Use Helmet middleware
+// Trust first proxy if needed (uncomment if applicable)
+// app.set('trust proxy', 1);
+
+// Use of Helmet middleware for security headers
 app.use(helmet());
+
+// Rate limiting applies globally to all routes
+const generalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 1000, // Limit each IP to 100 requests per windowMs                       ///// You need to change this to 100 times for more security !!!!!
+  message: {
+    message: 'Too many requests from this IP, please try again later.',
+  },
+});
+
+// Rate limiting for login route
+const loginLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // Limit each IP to 5 login attempts per windowMs                       ///// change this to 5 or more times for more security !!!!!
+  message: { message: 'Too many login attempts, please try again later.' },
+});
+
+// Apply global rate limiter
+app.use(generalLimiter);
 
 // Global middleware
 app.use(express.json());
@@ -56,26 +79,19 @@ Sentry.init({
 app.use('/users', usersRouter);
 app.use('/events', eventsRouter);
 app.use('/categories', categoriesRouter);
-app.use('/login', loginRouter);
+app.use('/login', loginLimiter, loginRouter); // added the login limiter here
 app.use('/contact', contactFormRouter);
 
-// Serve static files from the Vite build directory
+// Serve static files from the uploads directory
+app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
-// for DEVELOPMENT Comment out this block
+// Serve static files from the Vite build directory
 app.use(express.static(path.join(process.cwd(), 'frontend', 'dist'))); // Adjust this path if needed
 
 // Catch-all route to serve the index.html for React Router
 app.get('*', (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'frontend', 'dist', 'index.html'));
+  res.sendFile(path.join(process.cwd(), 'frontend', 'dist', 'index.html')); // Adjust this path if needed
 });
-// for DEVELOPMENT Comment out this block till here
-
-// Test route voor backend(Always keep this route for development/testing/debugging, but before the error handler)
-// app.get('/', (req, res) => {
-//   res.send(
-//     '✅ Backend werkt! Gebruik /users of andere API-routes om verder te testen.'
-//   );
-// });
 
 // Error handling middleware (should be at the end)
 app.use(errorHandler);
