@@ -1,8 +1,8 @@
 # 🔧 Development & Production-Based Approach
 
-## 🌐 Live Demo
+## 🌐 Live Demo #Last update: 26-09-2025
 
-[Visit the App](https://website-frontend-8wnm.onrender.com)
+[Visit the App(click)](https://website-frontend-8wnm.onrender.com)
 
 > ⚠️ **Note:** It may take **50 to 160 seconds** for the **events to be loaded** due to the cold start delay on a free Render account.
 
