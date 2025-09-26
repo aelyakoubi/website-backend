@@ -97,7 +97,6 @@ Although hosted separately, both are **part of the same project** and communicat
 - Auth flow (Forgot Password, Secure Token Handling)
 - Technical documentation (Setup Guide, API References)
 
-![alt text](<Screenshot 2025-09-26 152829newstyledouble-1.png>)
 ![alt text](<Screenshot 2025-09-26 150937newstyle.png>)
 ![Screenshot 2024-10-11 142737](https://github.com/user-attachments/assets/92e87063-25ec-4a90-8eac-289aefc715af)
 ![Screenshot 2024-10-10 203209](https://github.com/user-attachments/assets/5d0d346a-8674-4cbe-8a52-1a2a17cfdbf7)
