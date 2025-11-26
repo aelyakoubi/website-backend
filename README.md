@@ -1,22 +1,21 @@
 # 🔧 Development & Production-Based Approach
 
-## 🌐 Live Demo
+## 🌐 Live Demo #Last update: 26-09-2025
 
-[Visit the App](https://website-frontend-8wnm.onrender.com)
+[Visit the App(click)](https://website-frontend-8wnm.onrender.com)
 
 > ⚠️ **Note:** It may take **50 to 160 seconds** for the **events to be loaded** due to the cold start delay on a free Render account.
-
 
 ## 🔐 Test Credentials
 
 To test the application, log in using:
 
-- **Username:** `Wimpie Blok`  
+- **Username:** `Wimpie Blok`
 - **Password:** `Wimpie1234`
 
 > ⚠️ **Important:** Do **NOT** click the “Delete” button on the user account page. If you do, you’ll need a new test account.
 
-- You can find alternative credentials in this GitHub file:  
+- You can find alternative credentials in this GitHub file:
   `/website-backend/src/data/users.json`
 - Or simply create a new account via the **signup page**.
 
@@ -53,7 +52,7 @@ npx prisma studio
 To simplify development and deployment, **absolute URLs** are used when making API requests:
 
 ```js
-fetch(`${import.meta.env.VITE_API_URL}/events/${eventId}`)
+fetch(`${import.meta.env.VITE_API_URL}/events/${eventId}`);
 ```
 
 ### 📌 Why this approach?
@@ -73,6 +72,7 @@ Using a full base URL via `import.meta.env.VITE_API_URL` avoids the need to swit
 This project was originally developed as a **monorepo fullstack application** (frontend + backend in one).
 
 > ⚠️ **However, due to Render’s free-tier limitations**, the project has been split into two public repositories for deployment:
+
 - `website-frontend`
 - `website-backend`
 
@@ -97,10 +97,7 @@ Although hosted separately, both are **part of the same project** and communicat
 - Auth flow (Forgot Password, Secure Token Handling)
 - Technical documentation (Setup Guide, API References)
 
-
-
-
-![Screenshot 2024-10-13 164227](https://github.com/user-attachments/assets/794893f9-1fd0-4bec-b5b6-62a87bd96619)
+![alt text](<Screenshot 2025-09-26 150937newstyle.png>)
 ![Screenshot 2024-10-11 142737](https://github.com/user-attachments/assets/92e87063-25ec-4a90-8eac-289aefc715af)
 ![Screenshot 2024-10-10 203209](https://github.com/user-attachments/assets/5d0d346a-8674-4cbe-8a52-1a2a17cfdbf7)
 ![Screenshot 2024-10-10 203329](https://github.com/user-attachments/assets/39f47830-ea77-4ced-ad81-dfe2d8b4158a)
