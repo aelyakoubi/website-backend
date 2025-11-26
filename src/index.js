@@ -4,8 +4,11 @@ import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
+import fs from 'fs';
 import helmet from 'helmet';
-import path from 'path';
+import path, { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
 import errorHandler from './middleware/errorHandler.js';
 import log from './middleware/logMiddleware.js';
 import categoriesRouter from './routes/categories.js';
@@ -21,39 +24,38 @@ const prisma = new PrismaClient({
 
 const app = express();
 
-// Trust first proxy if needed (uncomment if applicable)
-// app.set('trust proxy', 1);
+// __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-// Use of Helmet middleware for security headers
+// Use Helmet for security headers
 app.use(helmet());
 
-// Rate limiting applies globally to all routes
+// Global rate limiter
 const generalLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 1000, // Limit each IP to 100 requests per windowMs                       ///// You need to change this to 100 times for more security !!!!!
+  windowMs: 15 * 60 * 1000,
+  max: 1000,
   message: {
     message: 'Too many requests from this IP, please try again later.',
   },
 });
+app.use(generalLimiter);
 
-// Rate limiting for login route
+// Login route limiter
 const loginLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // Limit each IP to 5 login attempts per windowMs                       ///// change this to 5 or more times for more security !!!!!
+  windowMs: 15 * 60 * 1000,
+  max: 5,
   message: { message: 'Too many login attempts, please try again later.' },
 });
-
-// Apply global rate limiter
-app.use(generalLimiter);
 
 // Global middleware
 app.use(express.json());
 app.use(log);
 
-// Serve static files from the uploads directory
-app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+// Serve uploads
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// Configure CORS with custom allowed headers
+// CORS configuration
 const corsOptions = {
   origin:
     process.env.NODE_ENV === 'production'
@@ -75,28 +77,28 @@ Sentry.init({
   tracesSampleRate: 1.0,
 });
 
-// API Routes
+// API routes
 app.use('/users', usersRouter);
 app.use('/events', eventsRouter);
 app.use('/categories', categoriesRouter);
-app.use('/login', loginLimiter, loginRouter); // added the login limiter here
+app.use('/login', loginLimiter, loginRouter);
 app.use('/contact', contactFormRouter);
 
-// Serve static files from the uploads directory
-app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
+// **PRODUCTION ONLY**: Serve static frontend if dist exists
+const frontendDist = path.resolve(__dirname, '../../frontend/dist');
+if (fs.existsSync(frontendDist)) {
+  app.use(express.static(frontendDist));
 
-// Serve static files from the Vite build directory
-app.use(express.static(path.join(process.cwd(), 'frontend', 'dist'))); // Adjust this path if needed
+  // React Router catch-all
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendDist, 'index.html'));
+  });
+}
 
-// Catch-all route to serve the index.html for React Router
-app.get('*', (req, res) => {
-  res.sendFile(path.join(process.cwd(), 'frontend', 'dist', 'index.html')); // Adjust this path if needed
-});
-
-// Error handling middleware (should be at the end)
+// Error handling
 app.use(errorHandler);
 
-// Start the server
+// Start server
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
