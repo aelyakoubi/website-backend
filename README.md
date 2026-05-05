@@ -1,6 +1,6 @@
 # 🔧 Development & Production-Based Approach
 
-## 🌐 Live Demo #Last update: 26-09-2025
+## 🌐 Live Demo #Last update: 05-05-2026
 
 [Visit the App(click)](https://ivory-dugong-883765.hostingersite.com)
 
