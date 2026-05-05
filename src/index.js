@@ -28,6 +28,9 @@ const app = express();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Hostinger draait achter een proxy — nodig voor rate limiting en IP detectie
+app.set('trust proxy', 1);
+
 // Use Helmet for security headers
 app.use(helmet());
 
