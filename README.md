@@ -1,8 +1,8 @@
 # 🔧 Development & Production-Based Approach
 
-## 🌐 Live Demo #Last update: 26-09-2025
+## 🌐 Live Demo #Last update: 05-05-2026
 
-[Visit the App(click)](https://website-frontend-8wnm.onrender.com)
+[Visit the App(click)](https://ivory-dugong-883765.hostingersite.com)
 
 > ⚠️ **Note:** It may take **50 to 160 seconds** for the **events to be loaded** due to the cold start delay on a free Render account.
 
