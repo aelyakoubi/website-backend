@@ -39,7 +39,7 @@ const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 1000,
   message: {
-    message: 'Too many requests from this IP, please try again later.',
+    message: 'Too many requests. You are blocked for 15 minutes. Please try again later.',
   },
 });
 app.use(generalLimiter);
@@ -48,7 +48,10 @@ app.use(generalLimiter);
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 5,
-  message: { message: 'Too many login attempts, please try again later.' },
+  message: {
+    message:
+      'Too many login attempts. You are blocked for 15 minutes. Please try again later.',
+  },
 });
 
 // Global middleware
