@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "nodemon src/index.js",
     "start": "node src/index.js",
+    "build": "prisma generate",
     "seed": "node prisma/seed.js",
     "test-positive": "newman run \"./src/postman/collections/Events API.json\" -e \"./src/postman/environments/Local.postman_environment.json\"",
     "test-negative": "newman run \"./src/postman/collections/Events API Negative.json\" -e \"./src/postman/environments/Local.postman_environment.json\"",
@@ -42,6 +43,6 @@
   "devDependencies": {
     "newman": "^2.1.2",
     "nodemon": "^3.0.1",
-    "prisma": "^5.14.0"
+    "prisma": "^5.22.0"
   }
 }
