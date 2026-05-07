@@ -4,13 +4,17 @@ import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
+import session from 'express-session';
 import fs from 'fs';
 import helmet from 'helmet';
+import passport from 'passport';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
+import './middleware/auth0.js'; // Import Auth0 strategy
 import errorHandler from './middleware/errorHandler.js';
 import log from './middleware/logMiddleware.js';
+import authRouter from './routes/auth.js';
 import categoriesRouter from './routes/categories.js';
 import contactFormRouter from './routes/contactForm.js';
 import eventsRouter from './routes/events.js';
@@ -39,7 +43,8 @@ const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 1000,
   message: {
-    message: 'Too many requests. You are blocked for 15 minutes. Please try again later.',
+    message:
+      'Too many requests. You are blocked for 15 minutes. Please try again later.',
   },
 });
 app.use(generalLimiter);
@@ -57,6 +62,24 @@ const loginLimiter = rateLimit({
 // Global middleware
 app.use(express.json());
 app.use(log);
+
+// Session configuration for Passport
+app.use(
+  session({
+    secret: process.env.AUTH_SECRET_KEY || 'your-session-secret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      secure: process.env.NODE_ENV === 'production', // HTTPS only in production
+      httpOnly: true,
+      sameSite: 'lax',
+    },
+  })
+);
+
+// Passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 // Serve uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -89,6 +112,7 @@ app.use('/events', eventsRouter);
 app.use('/categories', categoriesRouter);
 app.use('/login', loginLimiter, loginRouter);
 app.use('/contact', contactFormRouter);
+app.use('/auth', authRouter);
 
 // **PRODUCTION ONLY**: Serve static frontend if dist exists
 const frontendDist = path.resolve(__dirname, '../../frontend/dist');
