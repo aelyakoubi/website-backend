@@ -4,14 +4,14 @@ import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
-import session from 'express-session';
 import fs from 'fs';
 import helmet from 'helmet';
-import passport from 'passport';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
 
-import './middleware/auth0.js'; // Import Auth0 strategy
+// AANGEPAST: passport en express-session verwijderd — OAuth wordt nu door de frontend Auth0 SDK afgehandeld.
+// auth0.js middleware importeren voor verifyToken (wordt gebruikt door andere routes indien nodig)
+import './middleware/auth0.js';
 import errorHandler from './middleware/errorHandler.js';
 import log from './middleware/logMiddleware.js';
 import authRouter from './routes/auth.js';
@@ -62,24 +62,6 @@ const loginLimiter = rateLimit({
 // Global middleware
 app.use(express.json());
 app.use(log);
-
-// Session configuration for Passport
-app.use(
-  session({
-    secret: process.env.AUTH_SECRET_KEY || 'your-session-secret',
-    resave: false,
-    saveUninitialized: true,
-    cookie: {
-      secure: process.env.NODE_ENV === 'production', // HTTPS only in production
-      httpOnly: true,
-      sameSite: 'lax',
-    },
-  })
-);
-
-// Passport middleware
-app.use(passport.initialize());
-app.use(passport.session());
 
 // Serve uploads
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

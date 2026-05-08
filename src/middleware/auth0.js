@@ -1,69 +1,18 @@
 // src/middleware/auth0.js
+//
+// AANGEPAST: Passport + passport-auth0 volledig verwijderd.
+// OAuth (Google/GitHub/Microsoft) wordt nu afgehandeld door de Auth0 React SDK op de frontend.
+// De backend ontvangt alleen nog het Auth0 access token en valideert dit via verifyToken.
+//
+// De backend heeft nu één taak bij OAuth login:
+// POST /auth/oauth-sync → gebruiker opslaan in DB en eigen JWT teruggeven.
+
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
-import passport from 'passport';
-import { Strategy as Auth0Strategy } from 'passport-auth0';
 
 const prisma = new PrismaClient();
 
-// Passport Auth0 Strategy Configuration
-passport.use(
-  new Auth0Strategy(
-    {
-      domain: process.env.AUTH0_DOMAIN,
-      clientID: process.env.AUTH0_CLIENT_ID,
-      clientSecret: process.env.AUTH0_CLIENT_SECRET,
-      callbackURL: '/auth/callback',
-    },
-    async (accessToken, refreshToken, extraParams, profile, done) => {
-      try {
-        // Check if user exists in database
-        let user = await prisma.user.findUnique({
-          where: { email: profile._json.email },
-        });
-
-        // If user doesn't exist, create one
-        if (!user) {
-          user = await prisma.user.create({
-            data: {
-              email: profile._json.email,
-              username:
-                profile._json.nickname || profile._json.email.split('@')[0],
-              name: profile._json.name,
-              password: 'oauth-user', // Placeholder for OAuth users
-              // Optional: store Auth0 profile picture
-              // image: profile._json.picture,
-            },
-          });
-        }
-
-        return done(null, user);
-      } catch (error) {
-        console.error('Auth0 Strategy Error:', error);
-        return done(error, null);
-      }
-    }
-  )
-);
-
-// Serialize user for session
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
-
-// Deserialize user from session
-passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await prisma.user.findUnique({
-      where: { id },
-    });
-    done(null, user);
-  } catch (error) {
-    done(error, null);
-  }
-});
-
-// Middleware to verify JWT token from frontend
+// Middleware to verify JWT token from frontend (eigen JWT na login/signup)
 export const verifyToken = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1]; // Bearer token
 
@@ -79,5 +28,3 @@ export const verifyToken = (req, res, next) => {
     return res.status(403).json({ message: 'Invalid token' });
   }
 };
-
-export default passport;

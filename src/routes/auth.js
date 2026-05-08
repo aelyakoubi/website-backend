@@ -1,79 +1,72 @@
 // src/routes/auth.js
+//
+// AANGEPAST: Passport routes (/google, /github, /microsoft, /twitter, /callback) verwijderd.
+// OAuth wordt nu volledig door de Auth0 React SDK op de frontend afgehandeld.
+//
+// Nieuwe route: POST /auth/oauth-sync
+// Na succesvolle Auth0 login op de frontend stuurt de frontend de gebruikersdata
+// naar deze route. De backend slaat de gebruiker op in de database (als die nog
+// niet bestaat) en geeft een eigen JWT terug — precies zoals bij normale login.
+
 import { PrismaClient } from '@prisma/client';
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
-import passport from 'passport';
 
 const router = Router();
 const prisma = new PrismaClient();
 
-// Google login - initiates Auth0 Google strategy
-router.get(
-  '/google',
-  passport.authenticate('auth0', { connection: 'google-oauth2' })
-);
+// POST /auth/oauth-sync
+// Wordt aangeroepen door de frontend na een succesvolle Auth0 OAuth login.
+// Ontvangt: { email, name, nickname/username } uit het Auth0 user object.
+// Geeft terug: eigen JWT token + user object.
+router.post('/oauth-sync', async (req, res) => {
+  try {
+    const { email, name, nickname, sub } = req.body;
 
-// GitHub login - initiates Auth0 GitHub strategy
-router.get('/github', passport.authenticate('auth0', { connection: 'github' }));
-
-// Microsoft login - initiates Auth0 Microsoft strategy
-router.get(
-  '/microsoft',
-  passport.authenticate('auth0', { connection: 'windowslive' })
-);
-
-// Twitter login - initiates Auth0 Twitter strategy
-router.get(
-  '/twitter',
-  passport.authenticate('auth0', { connection: 'twitter' })
-);
-
-// OAuth callback from Auth0
-router.get(
-  '/callback',
-  passport.authenticate('auth0', { failureRedirect: '/' }),
-  async (req, res) => {
-    try {
-      // User is now authenticated by Auth0 via Passport
-      const user = req.user;
-
-      // Generate JWT token for frontend
-      const token = jwt.sign(
-        { id: user.id, username: user.username, email: user.email },
-        process.env.AUTH_SECRET_KEY,
-        { expiresIn: '1h' }
-      );
-
-      // Redirect to frontend with token in query parameter
-      // Frontend will extract this and store in localStorage
-      const frontendUrl =
-        process.env.NODE_ENV === 'production'
-          ? `https://ivory-dugong-883765.hostingersite.com/auth/callback?token=${token}&user=${encodeURIComponent(JSON.stringify(user))}`
-          : `http://localhost:5173/auth/callback?token=${token}&user=${encodeURIComponent(JSON.stringify(user))}`;
-
-      res.redirect(frontendUrl);
-    } catch (error) {
-      console.error('Auth callback error:', error);
-      res.status(500).json({ message: 'Authentication failed' });
+    if (!email) {
+      return res.status(400).json({ message: 'Email is required' });
     }
+
+    // Controleer of gebruiker al bestaat in de database
+    let user = await prisma.user.findUnique({
+      where: { email },
+    });
+
+    // Als gebruiker niet bestaat, maak een nieuw account aan
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          email,
+          name: name || email.split('@')[0],
+          username: nickname || email.split('@')[0],
+          password: 'oauth-user', // Placeholder — OAuth gebruikers hebben geen wachtwoord
+        },
+      });
+    }
+
+    // Genereer eigen JWT token (zelfde formaat als normale login)
+    const token = jwt.sign(
+      { id: user.id, username: user.username, email: user.email },
+      process.env.AUTH_SECRET_KEY,
+      { expiresIn: '1h' }
+    );
+
+    res.status(200).json({ token, user });
+  } catch (error) {
+    console.error('OAuth sync error:', error);
+    res.status(500).json({ message: 'OAuth sync failed' });
   }
-);
+});
 
-// Logout
+// GET /auth/logout
+// Logt de gebruiker uit (frontend verwijdert de JWT uit localStorage).
 router.get('/logout', (req, res) => {
-  req.logout((err) => {
-    if (err) {
-      return res.status(500).json({ message: 'Logout failed' });
-    }
+  const frontendUrl =
+    process.env.NODE_ENV === 'production'
+      ? 'https://ivory-dugong-883765.hostingersite.com'
+      : 'http://localhost:5173';
 
-    // Clear session and redirect to frontend
-    const frontendUrl =
-      process.env.NODE_ENV === 'production'
-        ? 'https://ivory-dugong-883765.hostingersite.com'
-        : 'http://localhost:5173';
-
-    res.redirect(frontendUrl);
-  });
+  res.redirect(frontendUrl);
 });
 
 export default router;
