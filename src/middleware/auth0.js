@@ -1,18 +1,26 @@
 // src/middleware/auth0.js
 //
-// AANGEPAST: Passport + passport-auth0 volledig verwijderd.
-// OAuth (Google/GitHub/Microsoft) wordt nu afgehandeld door de Auth0 React SDK op de frontend.
-// De backend ontvangt alleen nog het Auth0 access token en valideert dit via verifyToken.
+// Twee token validators:
 //
-// De backend heeft nu één taak bij OAuth login:
-// POST /auth/oauth-sync → gebruiker opslaan in DB en eigen JWT teruggeven.
+// 1. jwtCheck — valideert Auth0 access tokens (RS256) via express-oauth2-jwt-bearer
+//    Gebruik dit op routes die OAuth gebruikers (Google/GitHub/Microsoft) moeten beschermen.
+//    Installeer eerst: npm install express-oauth2-jwt-bearer
+//
+// 2. verifyToken — valideert eigen JWT tokens (HS256) die bij normale login worden aangemaakt
+//    Gebruik dit op routes die normale gebruikers (email/wachtwoord) moeten beschermen.
 
-import { PrismaClient } from '@prisma/client';
+import { auth } from 'express-oauth2-jwt-bearer';
 import jwt from 'jsonwebtoken';
 
-const prisma = new PrismaClient();
+// Auth0 JWT validator — voor OAuth gebruikers (Google/GitHub/Microsoft)
+// Valideert het access token dat de Auth0 React SDK meestuurt
+export const jwtCheck = auth({
+  audience: process.env.AUTH0_AUDIENCE,
+  issuerBaseURL: `https://${process.env.AUTH0_DOMAIN}/`,
+  tokenSigningAlg: 'RS256',
+});
 
-// Middleware to verify JWT token from frontend (eigen JWT na login/signup)
+// Eigen JWT validator — voor normale email/wachtwoord login
 export const verifyToken = (req, res, next) => {
   const token = req.headers.authorization?.split(' ')[1]; // Bearer token
 
