@@ -4,14 +4,10 @@ import cors from 'cors';
 import 'dotenv/config';
 import express from 'express';
 import rateLimit from 'express-rate-limit';
-import fs from 'fs';
+// import fs from 'fs';        // Only needed when serving frontend build from Express
 import helmet from 'helmet';
 import path, { dirname } from 'path';
 import { fileURLToPath } from 'url';
-
-// AANGEPAST: passport en express-session verwijderd — OAuth wordt nu door de frontend Auth0 SDK afgehandeld.
-// auth0.js middleware importeren voor verifyToken (wordt gebruikt door andere routes indien nodig)
-import './middleware/auth0.js';
 import errorHandler from './middleware/errorHandler.js';
 import log from './middleware/logMiddleware.js';
 import authRouter from './routes/auth.js';
@@ -96,16 +92,17 @@ app.use('/login', loginLimiter, loginRouter);
 app.use('/contact', contactFormRouter);
 app.use('/auth', authRouter);
 
-// **PRODUCTION ONLY**: Serve static frontend if dist exists
-const frontendDist = path.resolve(__dirname, '../../frontend/dist');
-if (fs.existsSync(frontendDist)) {
-  app.use(express.static(frontendDist));
+// OPTIONAL: Use only when frontend is served by Express backend
+// Not needed when frontend and backend are hosted separately
+// const frontendDist = path.resolve(__dirname, '../../frontend/dist');
+// if (fs.existsSync(frontendDist)) {
+//   app.use(express.static(frontendDist));
 
-  // React Router catch-all
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(frontendDist, 'index.html'));
-  });
-}
+//   // React Router catch-all
+//   app.get('*', (req, res) => {
+//     res.sendFile(path.join(frontendDist, 'index.html'));
+//   });
+// }
 
 // Error handling
 app.use(errorHandler);
