@@ -11,6 +11,7 @@ import { fileURLToPath } from 'url';
 import errorHandler from './middleware/errorHandler.js';
 import log from './middleware/logMiddleware.js';
 import authRouter from './routes/auth.js';
+import accountRouter from './routes/account.js';
 import categoriesRouter from './routes/categories.js';
 import contactFormRouter from './routes/contactForm.js';
 import eventsRouter from './routes/events.js';
@@ -91,6 +92,7 @@ app.use('/categories', categoriesRouter);
 app.use('/login', loginLimiter, loginRouter);
 app.use('/contact', contactFormRouter);
 app.use('/auth', authRouter);
+app.use('/account', accountRouter);
 
 // OPTIONAL: Use only when frontend is served by Express backend
 // Not needed when frontend and backend are hosted separately
