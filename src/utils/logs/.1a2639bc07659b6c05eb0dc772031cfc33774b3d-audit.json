@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "C:\\Users\\aelya\\Desktop\\website-backend\\src\\utils\\logs\\.1a2639bc07659b6c05eb0dc772031cfc33774b3d-audit.json",
+    "files": [
+        {
+            "date": 1778614949358,
+            "name": "C:\\Users\\aelya\\Desktop\\website-backend\\src\\utils\\logs\\eventsite-2026-05-12.log",
+            "hash": "e62e10e1fad83f1683972dc7bf4d6137ceac29234f3c1f4dcf25b56d163e7c96"
+        }
+    ],
+    "hashType": "sha256"
+}
