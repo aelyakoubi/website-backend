@@ -1,33 +1,104 @@
-** For setup/and database view **
+# Development Setup
 
-npm install  
+## Install Dependencies
+
+```bash
+npm install
+```
+
+---
+
+# Prisma Setup
+
+## Initialize Prisma
+
+```bash
+npx prisma init
+```
+
+## Generate Prisma Client
+
+```bash
+npx prisma generate
+```
+
+## Format Prisma Schema
+
+```bash
+npx prisma format
+```
+
+## Push Schema to Database
+
+```bash
+npx prisma db push
+```
+
+## Create Migration
+
+```bash
+npx prisma migrate dev --name init
+```
+
+---
+
+# Seed Database
+
+```bash
+npm run seed
+```
+
+---
+
+# Start Development Server
+
+```bash
 npm run dev
-npm i prisma -D
-npx prisma init                            1.
-npx prisma generate                        2.
-npx prisma format                          3. 
-npm install @prisma/client                 4.              
-npx prisma db push                         5.
+```
 
+---
 
-npm run seed                               6.
-npx prisma studio   
-npx prisma migrate dev --name init         7.
-npx prisma migrate dev                     8.                       
+# Open Prisma Studio
 
+```bash
+npx prisma studio
+```
 
-npx prisma command    (to know all command options)
+Prisma Studio opens a browser interface to inspect and manage the database.
 
-npx prisma studio                     (open an third terminal to view the database. npx prisma studio and enter)
-npm run dev
-npx prisma migrate dev --name init     // add a migration of your data to keep original data save
- 
+---
 
-To solve this issue, you can restart the server, and it will use the original dataset again. 
-The test requires the original data from the seed file to work properly. 
-If you want to reset your data, you can use the following command. 
-(keep in mind that this also pushes your latest Prisma etc)
+# Reset Database
 
-npx prisma db push --force-reset      // remove existing data and apply the latest schema                 
-npm run seed                          // seed the database with new data from backend/src/data/..
-npm run dev                           // start / restart the dev eenvironment
+```bash
+npx prisma db push --force-reset
+npm run seed
+```
+
+This will:
+
+* remove existing database data
+* apply the latest Prisma schema
+* reseed the database
+
+---
+
+# Useful Prisma Commands
+
+## View all Prisma commands
+
+```bash
+npx prisma --help
+```
+
+## Create a new migration
+
+```bash
+npx prisma migrate dev --name migration_name
+```
+
+## Regenerate Prisma Client
+
+```bash
+npx prisma generate
+```
