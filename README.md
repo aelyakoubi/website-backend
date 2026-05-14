@@ -1,112 +1,179 @@
-# 🔧 Development & Production-Based Approach
+# 🔧 Fullstack Event Management Platform
 
-## 🌐 Live Demo #Last update: 05-05-2026
+## 🌐 Live Demo
 
-[Visit the App(click)](https://ivory-dugong-883765.hostingersite.com)
+**Last Updated:** 14-05-2026
 
-> ⚠️ **Note:** It may take **50 to 160 seconds** for the **events to be loaded** due to the cold start delay on a free Render account.
-
-## 🔐 Test Credentials
-
-To test the application, log in using:
-
-- **Username:** `Wimpie Blok`
-- **Password:** `Wimpie1234`
-
-> ⚠️ **Important:** Do **NOT** click the “Delete” button on the user account page. If you do, you’ll need a new test account.
-
-- You can find alternative credentials in this GitHub file:
-  `/website-backend/src/data/users.json`
-- Or simply create a new account via the **signup page**.
+[Visit the Application](https://ivory-dugong-883765.hostingersite.com)
 
 ---
 
-## 🛠️ Local Setup Instructions
+# 🔐 Authentication
 
-### Step 1: Frontend (Terminal 1)
+Users can:
 
-```bash
-npm install
-npm audit fix       # Optional, if needed
-npm run start       # Starts on port 5173
+* Sign up with email/password
+* Log in with email/password
+* Continue with:
+
+  * Google
+  * GitHub
+  * Microsoft
+
+Authentication is powered by Auth0 and integrated with a custom backend JWT authentication flow.
+
+---
+
+# 🧪 Test Credentials
+
+You can test the application using:
+
+* **Username:** `Wimpie Blok`
+* **Password:** `Wimpie1234`
+
+> ⚠️ Please do not delete the test account from the user account page.
+
+Additional test users can be found in:
+
+```txt id="91a74l"
+/website-backend/src/data/users.json
 ```
 
-### Step 2: Backend (Terminal 2)
+Or create a new account through the signup page.
 
-```bash
+---
+
+# 🛠️ Local Development Setup
+
+## 1. Frontend
+
+```bash id="egwwg0"
 npm install
-npm audit fix       # Optional, if needed
-npm run start       # Starts on port 3000
+npm run dev
 ```
 
-### Step 3: MySQL Database (Terminal 3)
+Runs on:
 
-```bash
+```txt id="1nrgrg"
+http://localhost:5173
+```
+
+---
+
+## 2. Backend
+
+```bash id="y90sk9"
+npm install
+npm run dev
+```
+
+Runs on:
+
+```txt id="x1uyz5"
+http://localhost:3000
+```
+
+---
+
+## 3. Prisma Studio
+
+```bash id="xt7x7k"
 npx prisma studio
 ```
 
+Opens a browser interface for managing the database.
+
 ---
 
-## 🌍 API Routing Note
+# 🌍 Environment-Based API Routing
 
-To simplify development and deployment, **absolute URLs** are used when making API requests:
+The frontend communicates with the backend using environment variables:
 
-```js
+```js id="dptxq7"
 fetch(`${import.meta.env.VITE_API_URL}/events/${eventId}`);
 ```
 
-### 📌 Why this approach?
+This approach provides:
 
-Using a full base URL via `import.meta.env.VITE_API_URL` avoids the need to switch between relative paths (like `/api/...`) in development vs. production. This ensures consistency and reduces manual adjustments across environments.
+* consistent API routing
+* easier deployment management
+* separation between frontend and backend environments
+* support for local and production environments
 
-- ✅ Works seamlessly with environment variables (e.g., `.env.local`, `.env.production`)
-- ✅ Prevents CORS issues when frontend and backend are hosted on different domains
-- ✅ Suitable for both **local development** and **split deployment** (e.g., Render)
+Example:
 
-> ℹ️ `VITE_API_URL` is defined in your `.env` file and points to the backend’s base URL (e.g., `http://localhost:3000` for local or your Render backend URL in production).
+```env id="w0whrj"
+VITE_API_URL=http://localhost:3000
+```
 
----
+Production:
 
-## 🔗 Project Context: Render-Based Split Deployment
-
-This project was originally developed as a **monorepo fullstack application** (frontend + backend in one).
-
-> ⚠️ **However, due to Render’s free-tier limitations**, the project has been split into two public repositories for deployment:
-
-- `website-frontend`
-- `website-backend`
-
-Although hosted separately, both are **part of the same project** and communicate via API endpoints. The frontend uses the backend through a base URL defined in environment variables.
-
-> 🧩 In a professional setup (like Vercel, AWS, or Docker), the app can run as a single fullstack application again.
+```env id="n4j9bg"
+VITE_API_URL=https://your-production-api-url.com
+```
 
 ---
 
-## 🧪 Testing Notes
+# 🏗️ Project Architecture
 
-- The `.env` file is included for testing purposes.
-- Integration and unit tests are **still being updated** due to recent project changes.
+This project follows a split fullstack architecture:
+
+```txt id="g84q0i"
+website-frontend
+website-backend
+```
+
+## Frontend Stack
+
+* React
+* Vite
+* React Router
+* Auth0 React SDK
+
+## Backend Stack
+
+* Express.js
+* Prisma ORM
+* PostgreSQL
+* JWT Authentication
+* Nodemailer
 
 ---
 
-## 🚀 Project Status: Onward & Upward
+# 🔐 Authentication Architecture
 
-### 🔧 Current Phase (In Progress):
+Authentication uses a backend-first approach:
 
-- Testing suite (Unit, API & Integration)
-- Auth flow (Forgot Password, Secure Token Handling)
-- Technical documentation (Setup Guide, API References)
+```txt id="kg0qmf"
+Frontend
+→ Auth0 Login
+→ Backend OAuth Sync
+→ Backend JWT
+→ Protected API Routes
+```
 
-![alt text](<Screenshot 2025-09-26 150937newstyle.png>)
-![Screenshot 2024-10-11 142737](https://github.com/user-attachments/assets/92e87063-25ec-4a90-8eac-289aefc715af)
-![Screenshot 2024-10-10 203209](https://github.com/user-attachments/assets/5d0d346a-8674-4cbe-8a52-1a2a17cfdbf7)
-![Screenshot 2024-10-10 203329](https://github.com/user-attachments/assets/39f47830-ea77-4ced-ad81-dfe2d8b4158a)
-![Screenshot 2024-10-11 142435](https://github.com/user-attachments/assets/e024e403-b32f-4fa2-90d8-4fd7ea7696cb)
-![Screenshot 2024-10-11 142143](https://github.com/user-attachments/assets/ae3e63dd-7df3-4706-a2cd-8611deb42015)
-![Screenshot 2024-10-11 142038](https://github.com/user-attachments/assets/2b65b00a-fd78-4953-a0a3-b155d4c359ea)
-![Screenshot 2024-10-10 203233](https://github.com/user-attachments/assets/663e1e9d-b7c9-4f68-aaff-6d596a7c4f27)
-![Screenshot 2024-10-10 203244](https://github.com/user-attachments/assets/aa76a163-7ef4-4f0b-9dcc-e2e19b793220)
-![Screenshot 2024-10-10 203306](https://github.com/user-attachments/assets/019edd08-94b6-4a44-8e7f-4c513710a675)
-![Screenshot 2024-10-11 143335](https://github.com/user-attachments/assets/15e07885-28bd-471f-bf4f-8ba3d4940b97)
-![Screenshot 2024-10-11 143404](https://github.com/user-attachments/assets/002ac242-83cd-4163-b53e-1772c8a89639)
-![Screenshot 2024-10-11 143421](https://github.com/user-attachments/assets/1af49b0c-3064-4791-a0d6-60c481022ae0)
+Auth0 is used as the identity provider, while authorization and protected routes are managed by the backend API.
+
+---
+
+# 🧪 Testing Notes
+
+* `.env` files are excluded from the repository
+* Test suites are currently being updated
+* Postman collections are included for API testing
+
+---
+
+# 🚀 Current Development Status
+
+## Currently Improving
+
+* Unit & integration testing
+* Forgot password functionality
+* API documentation
+* Technical documentation
+* Additional frontend optimizations
+
+---
+
+# 📸 Application Preview
