@@ -1,14 +1,12 @@
 // src/routes/auth.js
 //
-// AANGEPAST: Passport routes (/google, /github, /microsoft, /twitter, /callback) verwijderd.
-// OAuth wordt nu volledig door de Auth0 React SDK op de frontend afgehandeld.
-//
-// Nieuwe route: POST /auth/oauth-sync
-// Na succesvolle Auth0 login op de frontend stuurt de frontend de gebruikersdata
-// naar deze route. De backend slaat de gebruiker op in de database (als die nog
-// niet bestaat) en geeft een eigen JWT terug — precies zoals bij normale login.
+// AANGEPAST: OAuth gebruikers krijgen nu een bcrypt-gehashed random wachtwoord
+// in plaats van plaintext 'oauth-user'. Zo is de database consistent met
+// normaal geregistreerde gebruikers.
 
 import { PrismaClient } from '@prisma/client';
+import bcrypt from 'bcrypt';
+import crypto from 'crypto';
 import { Router } from 'express';
 import jwt from 'jsonwebtoken';
 
@@ -34,12 +32,16 @@ router.post('/oauth-sync', async (req, res) => {
 
     // Als gebruiker niet bestaat, maak een nieuw account aan
     if (!user) {
+      // Genereer een random wachtwoord dat niemand kent of kan raden
+      const randomPassword = crypto.randomBytes(32).toString('hex');
+      const hashedPassword = await bcrypt.hash(randomPassword, 10);
+
       user = await prisma.user.create({
         data: {
           email,
           name: name || email.split('@')[0],
           username: nickname || email.split('@')[0],
-          password: 'oauth-user', // Placeholder — OAuth gebruikers hebben geen wachtwoord
+          password: hashedPassword,
         },
       });
     }
@@ -59,7 +61,6 @@ router.post('/oauth-sync', async (req, res) => {
 });
 
 // GET /auth/logout
-// Logt de gebruiker uit (frontend verwijdert de JWT uit localStorage).
 router.get('/logout', (req, res) => {
   const frontendUrl =
     process.env.NODE_ENV === 'production'
