@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { body, validationResult } from 'express-validator'; // Import express-validator
+import { body, validationResult } from 'express-validator';
 import getUsers from "../services/users/getUsers.js";
 import createUser from "../services/users/createUser.js";
 import getUserById from "../services/users/getUserById.js";
@@ -11,7 +11,6 @@ import sendWelcomeEmail from "../services/email/sendWelcomeEmail.js";
 
 const router = Router();
 
-// Validation rules
 const userValidationRules = () => {
   return [
     body('name').notEmpty().withMessage('Name is required'),
@@ -30,9 +29,8 @@ router.get("/", async (req, res, next) => {
   }
 });
 
-// Signup route with validation
+// Signup route
 router.post('/signup', upload.single('image'), userValidationRules(), async (req, res) => {
-  console.log('Received data:', req.body);  // Log the incoming data for debugging
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
@@ -43,14 +41,21 @@ router.post('/signup', upload.single('image'), userValidationRules(), async (req
 
   try {
     const newUser = await createUser(name, email, username, password, image);
-    await sendWelcomeEmail(email); // Optional email notification
-    res.status(201).json(newUser);
+
+    // Send welcome email in the background — username now passed correctly
+    sendWelcomeEmail(email, username).catch((err) =>
+      console.error('Welcome email error:', err)
+    );
+
+    // Return user + success message so frontend can show a toast
+    res.status(201).json({
+      message: `Welcome ${username}! Your account has been created. Check your email for a confirmation.`,
+      user: newUser,
+    });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 });
-
-
 
 // Get user by ID
 router.get("/:id", async (req, res, next) => {
@@ -89,11 +94,11 @@ router.delete("/:id", auth, async (req, res, next) => {
   }
 });
 
-// Update user by ID with validation
+// Update user by ID
 router.put("/:id", auth, userValidationRules(), async (req, res, next) => {
-  const errors = validationResult(req); // Check for validation errors
+  const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    return res.status(400).json({ errors: errors.array() }); // Return errors if validation fails
+    return res.status(400).json({ errors: errors.array() });
   }
 
   try {
